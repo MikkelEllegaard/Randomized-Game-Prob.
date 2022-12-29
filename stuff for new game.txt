@@ -1,0 +1,40 @@
+theme:
+futuristic
+old
+modern
+colorful
+dark
+classic
+realistic
+childish
+2d
+western
+cartoony
+
+genre:
+horror
+sci-fi
+town and city
+medieval
+building
+fps
+military
+naval
+adventure
+comedy
+
+gameplay:
+simulator
+battle royale
+mining
+item hunt
+trading
+tycoon
+anime
+educational
+explore
+race
+obby
+cart ride
+story
+speedrun
