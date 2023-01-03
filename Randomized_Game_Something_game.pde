@@ -1,4 +1,5 @@
 boolean StartMenu = true;
+boolean MakeGame = false;
 
 boolean HowToPlay;
 boolean About;
@@ -13,6 +14,7 @@ int GridY = 10; //How many tiles on Y axis (NOT lines)
 
 void draw() {
   if (StartMenu) StartMenu();
+  if (MakeGame) MakeGame();
   
   if (Grid) Grid();
 }
@@ -43,7 +45,7 @@ void StartMenu() {
   textSize(100);
   text("PLAY", width*0.43, height*0.54);
   
-  if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.1 && mouseY <= (height*0.1)+(height*0.3)) fill(204, 102, 0); //is mouse hovering over how to play button?
+  if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.1 && mouseY <= (height*0.1)+(height*0.2)) fill(204, 102, 0); //is mouse hovering over how to play button?
   else fill(255, 150, 50);
   
   rect(width/4, height*0.1, width/2, height*0.2); //how to play button
@@ -59,6 +61,15 @@ void StartMenu() {
   noFill();
 }
 
+void MakeGame() {
+  background(75, 150, 0);
+}
+
 void mousePressed() {
-  
+  if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.4 && mouseY <= (height*0.4)+(height*0.2)) {
+    if (StartMenu) {
+      StartMenu = false;
+      MakeGame = true;
+    }
+  }
 }
