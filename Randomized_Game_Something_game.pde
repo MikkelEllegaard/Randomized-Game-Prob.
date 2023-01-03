@@ -1,5 +1,8 @@
 boolean StartMenu = true;
 
+boolean HowToPlay;
+boolean About;
+
 void setup() {
   size(1500, 800);
 }
@@ -27,30 +30,25 @@ void Grid() {
   
 }
 
-boolean HowToPlay;
-boolean About;
-
 void StartMenu() {
-  int MouseX = mouseX;
-  int MouseY = mouseY;
   
   background(75, 150, 0);
   
   
   fill(255, 50, 50); //give playbutton red color
-  if (MouseX >= width/4 && MouseX <= (width/4)+(width/2) && MouseY >= height*0.4 && MouseY <= (height*0.4)+(height*0.2)) fill(204, 0, 0); //is mouse hovering over play button?
+  if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.4 && mouseY <= (height*0.4)+(height*0.2)) fill(204, 0, 0); //is mouse hovering over play button?
   
   rect(width/4, height*0.4, width/2, height*0.2); //play button
   fill(0);
   textSize(100);
   text("PLAY", width*0.43, height*0.54);
   
-  if (MouseX >= width/4 && MouseX <= (width/4)+(width/2) && MouseY >= height*0.1 && MouseY <= (height*0.1)+(height*0.3)) fill(204, 102, 0); //is mouse hovering over how to play button?
+  if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.1 && mouseY <= (height*0.1)+(height*0.3)) fill(204, 102, 0); //is mouse hovering over how to play button?
   else fill(255, 150, 50);
   
   rect(width/4, height*0.1, width/2, height*0.2); //how to play button
   
-  if (MouseX >= width/4 && MouseX <= (width/4)+(width/2) && MouseY >= height*0.7 && MouseY <= (height*0.7)+(height*0.2)) fill(204, 102, 0); //is mouse hovering over about button?
+  if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.7 && mouseY <= (height*0.7)+(height*0.2)) fill(204, 102, 0); //is mouse hovering over about button?
   else fill(255, 150, 50);
   
   rect(width/4, height*0.7, width/2, height*0.2); //about button
