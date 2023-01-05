@@ -4,8 +4,20 @@ boolean MakeGame = false;
 boolean HowToPlay;
 boolean About;
 
+HashMap<String, Boolean> ThemesB = new HashMap<String, Boolean>();
+HashMap<Integer, String> ThemesI = new HashMap<Integer, String>();
+
+
 void setup() {
   size(1500, 800);
+  
+  ThemesB.put("Futuristic", false);
+  ThemesB.put("Modern", false);
+  ThemesB.put("Old", false);
+  ThemesB.put("Western", false);
+  
+  ThemesI.put(1, "Futuristic");
+  ThemesI.put(2, "Modern");
 }
 
 boolean Grid = true;
