@@ -6,7 +6,11 @@ boolean About;
 
 HashMap<String, Boolean> ThemesB = new HashMap<String, Boolean>();
 HashMap<Integer, String> ThemesI = new HashMap<Integer, String>();
+String Themes1;
+String Themes2;
+boolean Theme2Chosen = false;
 
+int MenuSizes;
 
 void setup() {
   size(1500, 800);
@@ -15,9 +19,14 @@ void setup() {
   ThemesB.put("Modern", false);
   ThemesB.put("Old", false);
   ThemesB.put("Western", false);
-  
   ThemesI.put(1, "Futuristic");
   ThemesI.put(2, "Modern");
+  ThemesI.put(3, "Old");
+  ThemesI.put(4, "Western");
+  Themes1 = ThemesI.get(floor(random(1,5)));
+  Themes2 = ThemesI.get(floor(random(1,5)));
+  
+  MenuSizes = width;
 }
 
 boolean Grid = true;
@@ -75,6 +84,28 @@ void StartMenu() {
 
 void MakeGame() {
   background(75, 150, 0);
+  
+  textAlign(LEFT);
+  fill(240);
+  rect(width/10, height/10, width*0.8, height*0.8); //Screen
+  textSize(MenuSizes*0.05);
+  fill(0);
+  text("Select Theme", width*0.15, height*0.225);
+  textSize(MenuSizes*0.075);
+  
+  fill(50, 150, 255);
+  if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over first theme option?
+  rect(width*0.3, height*0.3, width*0.4, height*0.2);
+  fill(0);
+  textAlign(CENTER);
+  text(Themes1, width/2, height*0.45);
+  
+  fill(50, 150, 255);
+  if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over second theme option?
+  rect(width*0.3, height*0.6, width*0.4, height*0.2);
+  while (Themes2 == Themes1) Themes2 = ThemesI.get(floor(random(1,5)));
+  fill(0);
+  text(Themes2, width/2, height*0.75);
 }
 
 void mousePressed() {
