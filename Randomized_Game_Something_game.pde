@@ -4,11 +4,13 @@ boolean MakeGame = false;
 boolean HowToPlay;
 boolean About;
 
+boolean SelectTheme;
+boolean SelectGenre;
+
 HashMap<String, Boolean> ThemesB = new HashMap<String, Boolean>();
 HashMap<Integer, String> ThemesI = new HashMap<Integer, String>();
 String Themes1;
 String Themes2;
-boolean Theme2Chosen = false;
 
 int MenuSizes;
 
@@ -90,6 +92,8 @@ void MakeGame() {
   rect(width/10, height/10, width*0.8, height*0.8); //Screen
   textSize(MenuSizes*0.05);
   fill(0);
+  
+  if (SelectTheme == true) {
   text("Select Theme", width*0.15, height*0.225);
   textSize(MenuSizes*0.075);
   
@@ -106,6 +110,7 @@ void MakeGame() {
   while (Themes2 == Themes1) Themes2 = ThemesI.get(floor(random(1,5)));
   fill(0);
   text(Themes2, width/2, height*0.75);
+  }
 }
 
 void mousePressed() {
@@ -113,6 +118,23 @@ void mousePressed() {
     if (StartMenu) {
       StartMenu = false;
       MakeGame = true;
+      SelectTheme = true;
+    }
+  }
+  
+  if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) {
+    if (MakeGame == true && SelectTheme == true) {
+      ThemesB.put(Themes1, true);
+      SelectTheme = false;
+      SelectGenre = true;
+      
+    }
+  }
+  else if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) {
+    if (MakeGame == true && SelectTheme == true) {
+      ThemesB.put(Themes2, true);
+      SelectTheme = false;
+      SelectGenre = true;
     }
   }
 }
