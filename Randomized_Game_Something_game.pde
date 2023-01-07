@@ -6,28 +6,55 @@ boolean About;
 
 boolean SelectTheme;
 boolean SelectGenre;
+boolean SelectGameplay;
 
 HashMap<String, Boolean> ThemesB = new HashMap<String, Boolean>();
 HashMap<Integer, String> ThemesI = new HashMap<Integer, String>();
-String Themes1;
-String Themes2;
+String Theme1;
+String Theme2;
+
+HashMap<String, Boolean> GenresB = new HashMap<String, Boolean>();
+HashMap<Integer, String> GenresI = new HashMap<Integer, String>();
+String Genre1;
+String Genre2;
+
+HashMap<String, Boolean> GameplaysB = new HashMap<String, Boolean>();
+HashMap<Integer, String> GameplaysI = new HashMap<Integer, String>();
+String Gameplay1;
+String Gameplay2;
 
 int MenuSizes;
 
 void setup() {
   size(1500, 800);
-  
+
   ThemesB.put("Futuristic", false);
-  ThemesB.put("Modern", false);
-  ThemesB.put("Old", false);
+  ThemesB.put("Realistic", false);
   ThemesB.put("Western", false);
   ThemesI.put(1, "Futuristic");
-  ThemesI.put(2, "Modern");
-  ThemesI.put(3, "Old");
-  ThemesI.put(4, "Western");
-  Themes1 = ThemesI.get(floor(random(1,5)));
-  Themes2 = ThemesI.get(floor(random(1,5)));
-  
+  ThemesI.put(2, "Realistic");
+  ThemesI.put(3, "Western");
+  Theme1 = ThemesI.get(floor(random(1, 4)));
+  Theme2 = ThemesI.get(floor(random(1, 4)));
+
+  GenresB.put("Horror", false);
+  GenresB.put("Town & City", false);
+  GenresB.put("Building", false); //works like tycoons on roblox. u get money, then press buttons to build some shit
+  GenresI.put(1, "Horror");
+  GenresI.put(2, "Town & City");
+  GenresI.put(3, "Building");
+  Genre1 = GenresI.get(floor(random(1, 4)));
+  Genre2 = GenresI.get(floor(random(1, 4)));
+
+  GameplaysB.put("Battle Royale", false);
+  GameplaysB.put("Obby", false);
+  GameplaysB.put("Story", false);
+  GameplaysI.put(1, "Battle Royale");
+  GameplaysI.put(2, "Obby");
+  GameplaysI.put(3, "Story");
+  Gameplay1 = GameplaysI.get(floor(random(1, 4)));
+  Gameplay2 = GameplaysI.get(floor(random(1, 4)));
+
   MenuSizes = width;
 }
 
@@ -38,101 +65,119 @@ int GridY = 10; //How many tiles on Y axis (NOT lines)
 void draw() {
   if (StartMenu) StartMenu();
   if (MakeGame) MakeGame();
-  
+
   if (Grid) Grid();
 }
 
 void Grid() {
   fill(0);
-  
+
   for (int i = width/GridX; i < width; i += width/GridX) {
     line(i, 0, i, height);
   }
-  
+
   for (int i = height/GridY; i < height; i+= height/GridY) {
     line(0, i, width, i);
   }
-  
 }
 
 void StartMenu() {
-  
+
   background(75, 150, 0);
-  
-  
+
+
   fill(255, 50, 50); //give playbutton red color
   if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.4 && mouseY <= (height*0.4)+(height*0.2)) fill(204, 0, 0); //is mouse hovering over play button?
-  
+
   rect(width/4, height*0.4, width/2, height*0.2); //play button
   fill(0);
   textSize(100);
   text("PLAY", width*0.43, height*0.54);
-  
+
   if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.1 && mouseY <= (height*0.1)+(height*0.2)) fill(204, 102, 0); //is mouse hovering over how to play button?
   else fill(255, 150, 50);
-  
+
   rect(width/4, height*0.1, width/2, height*0.2); //how to play button
-  
+
   if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.7 && mouseY <= (height*0.7)+(height*0.2)) fill(204, 102, 0); //is mouse hovering over about button?
   else fill(255, 150, 50);
-  
+
   rect(width/4, height*0.7, width/2, height*0.2); //about button
   fill(0);
   text("HOW TO PLAY", width*0.31, height*0.24);
   text("ABOUT", width*0.4, height*0.845);
-  
+
   noFill();
 }
 
 void MakeGame() {
   background(75, 150, 0);
-  
+
   textAlign(LEFT);
   fill(240);
   rect(width/10, height/10, width*0.8, height*0.8); //Screen
   textSize(MenuSizes*0.05);
   fill(0);
-  
+
   if (SelectTheme == true) {
-  text("Select Theme", width*0.15, height*0.225);
-  textSize(MenuSizes*0.075);
+    text("Select Theme", width*0.15, height*0.225);
+    textSize(MenuSizes*0.075);
+
+    fill(50, 150, 255);
+    if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over first theme option?
+    rect(width*0.3, height*0.3, width*0.4, height*0.2);
+    fill(0);
+    textAlign(CENTER);
+    text(Theme1, width/2, height*0.45);
+
+    fill(50, 150, 255);
+    if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over second theme option?
+    rect(width*0.3, height*0.6, width*0.4, height*0.2);
+    while (Theme2 == Theme1) Theme2 = ThemesI.get(floor(random(1, 4)));
+    fill(0);
+    text(Theme2, width/2, height*0.75);
+  }
   
-  fill(50, 150, 255);
-  if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over first theme option?
-  rect(width*0.3, height*0.3, width*0.4, height*0.2);
-  fill(0);
-  textAlign(CENTER);
-  text(Themes1, width/2, height*0.45);
-  
-  fill(50, 150, 255);
-  if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over second theme option?
-  rect(width*0.3, height*0.6, width*0.4, height*0.2);
-  while (Themes2 == Themes1) Themes2 = ThemesI.get(floor(random(1,5)));
-  fill(0);
-  text(Themes2, width/2, height*0.75);
+  else if (SelectGenre == true) {
+    text("Select Genre", width*0.15, height*0.225);
+    textSize(MenuSizes*0.075);
+
+    fill(50, 150, 255);
+    if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over first genre option?
+    rect(width*0.3, height*0.3, width*0.4, height*0.2);
+    fill(0);
+    textAlign(CENTER);
+    text(Genre1, width/2, height*0.45);
+
+    fill(50, 150, 255);
+    if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) fill(50, 50, 255); //is mouse hovering over second genre option?
+    rect(width*0.3, height*0.6, width*0.4, height*0.2);
+    while (Genre2 == Genre1) Theme2 = GenresI.get(floor(random(1, 4)));
+    fill(0);
+    text(Genre2, width/2, height*0.75);
   }
 }
 
 void mousePressed() {
+  //StartMenu
   if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.4 && mouseY <= (height*0.4)+(height*0.2)) {
     if (StartMenu) {
       StartMenu = false;
       MakeGame = true;
       SelectTheme = true;
     }
-  }
+  } 
   
-  if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) {
+  //Theme selection
+  else if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) {
     if (MakeGame == true && SelectTheme == true) {
-      ThemesB.put(Themes1, true);
+      ThemesB.put(Theme1, true);
       SelectTheme = false;
       SelectGenre = true;
-      
     }
-  }
-  else if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) {
+  } else if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) {
     if (MakeGame == true && SelectTheme == true) {
-      ThemesB.put(Themes2, true);
+      ThemesB.put(Theme2, true);
       SelectTheme = false;
       SelectGenre = true;
     }
