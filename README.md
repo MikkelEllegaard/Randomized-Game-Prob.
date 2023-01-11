@@ -9,3 +9,5 @@ Ideas:
 Works nearly just like the Roblox game, except you get to play the game you develop.
 
 Number of options for each category decreases after each choice, so by chosing one thing over another in the first category, some options in the next categories get removed (will save lots of time)
+
+The part where you play the game is made through classes (objects in this case), because it makes it much easier to make the games, since there will be less other code to distract
