@@ -1,6 +1,3 @@
-class Obby {
-}
-
 boolean StartMenu = true;
 boolean MakeGame = false;
 boolean PlayGame = false;
@@ -68,11 +65,24 @@ int GridX = 10; //How many tiles on X axis (NOT lines)
 int GridY = 10; //How many tiles on Y axis (NOT lines)
 
 void draw() {
-  background(200);
+  background(75, 150, 0);
+  fill(240);
+  rect(width*0.1, height*0.1, width*0.8, height*0.8);
   if (StartMenu) StartMenu();
   if (MakeGame) MakeGame();
   if (PlayGame) PlayGame();
 
+  strokeWeight(2);
+  fill(255, 50, 50); //give tester button red color
+  circle(width*0.95, height/2, width*0.075);
+  fill(0);
+  textAlign(CENTER);
+  textSize(MenuSizes*0.025);
+  text("TEST", width*0.95, height*0.515);
+
+  strokeWeight(1);
+  noFill();
+  textAlign(LEFT);
   if (Grid) Grid();
 }
 
@@ -80,7 +90,7 @@ void Grid() {
   fill(0);
 
   strokeWeight(1);
-  
+
   for (int i = width/GridX; i < width; i += width/GridX) {
     line(i, 0, i, height);
   }
@@ -120,11 +130,8 @@ void StartMenu() {
 }
 
 void MakeGame() {
-  background(75, 150, 0);
 
   textAlign(LEFT);
-  fill(240);
-  rect(width/10, height/10, width*0.8, height*0.8); //Screen
   textSize(MenuSizes*0.05);
   fill(0);
 
@@ -188,22 +195,50 @@ void MakeGame() {
 }
 
 void PlayGame() {
+  //Gameplay being made
+  if (GameplaysB.get("Obby")) {
+    translate(0,0);
+    
+    fill(240);
+    strokeWeight(2);
+    rect(width*0.1, height*0.6, width*0.3, height*0.1);
+    rect(width*0.1, height*0.7, width*0.3, height*0.2);
+    
+    noFill();
+    strokeWeight(1);
+    
+    //Genre being added
+    if (GenresB.get("Horror")) {
+      
+      //Theme being added
+      if (ThemesB.get("Realistic")) {
+      }
+    }
+  }
+  
   strokeWeight(10);
   line(width*0.1, height*0.1, width*0.1, height*0.9); //lodret
   line(width*0.9, height*0.1, width*0.9, height*0.9);
   line(width*0.1, height*0.1, width*0.9, height*0.1); //vandret
   line(width*0.1, height*0.9, width*0.9, height*0.9);
-  
-  if (GameplaysB.get("Obby")) {
-    if (GenresB.get("Horror")) {
-      if (ThemesB.get("Realistic")) {
-      }
-    }
-  }
+  strokeWeight(1);
 }
 
 void mouseClicked() {
   println("Mouse has been clicked");
+
+  //Tester button
+  if (mouseX >= (width*0.95)-((width*0.075)/2) && mouseX <= (width*0.95)+((width*0.075)/2) && mouseY >= (height/2)-((height*0.075)/2) && mouseY <= (height/2)+((height*0.075)/2)) {
+    println("Testermode On");
+    StartMenu = false;
+    MakeGame = false;
+    PlayGame = true;
+    
+    ThemesB.put("Realistic", true);
+    GenresB.put("Horror", true);
+    GameplaysB.put("Obby", true);
+  }
+
   //StartMenu
   if (StartMenu) {
     if (mouseX >= width/4 && mouseX <= (width/4)+(width/2) && mouseY >= height*0.4 && mouseY <= (height*0.4)+(height*0.2)) {
@@ -251,11 +286,32 @@ void mouseClicked() {
       GameplaysB.put(Gameplay1, true);
       SelectGameplay = false;
       PlayGame = true;
-      
     } else if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) {
       GameplaysB.put(Gameplay2, true);
       SelectGameplay = false;
       PlayGame = true;
     }
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+class Obby {
+  float xPos;
+  float yPos;
+  float xGroundPos;
+  float yGroundPos;
+  float yHeight;
+  
+  Obby(float tempXpos, float tempYpos, float tempXgroundPos, float tempYgroundPos, float tempYheight) {
+    xPos = tempXpos;
+    yPos = tempYpos;
+    xGroundPos = tempXgroundPos;
+    yGroundPos = tempYgroundPos;
+    yHeight = tempYheight;
+  }
+  
+  void Obstacle() {
+    
   }
 }
