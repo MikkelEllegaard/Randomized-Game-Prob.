@@ -1,3 +1,6 @@
+class Obby {
+}
+
 boolean StartMenu = true;
 boolean MakeGame = false;
 boolean PlayGame = false;
@@ -65,6 +68,7 @@ int GridX = 10; //How many tiles on X axis (NOT lines)
 int GridY = 10; //How many tiles on Y axis (NOT lines)
 
 void draw() {
+  background(200);
   if (StartMenu) StartMenu();
   if (MakeGame) MakeGame();
   if (PlayGame) PlayGame();
@@ -75,6 +79,8 @@ void draw() {
 void Grid() {
   fill(0);
 
+  strokeWeight(1);
+  
   for (int i = width/GridX; i < width; i += width/GridX) {
     line(i, 0, i, height);
   }
@@ -121,7 +127,7 @@ void MakeGame() {
   rect(width/10, height/10, width*0.8, height*0.8); //Screen
   textSize(MenuSizes*0.05);
   fill(0);
-  
+
   //Select theme
   if (SelectTheme == true) {
     text("Select Theme", width*0.15, height*0.225);
@@ -140,7 +146,7 @@ void MakeGame() {
     while (Theme2 == Theme1) Theme2 = ThemesI.get(floor(random(1, Options+1)));
     fill(0);
     text(Theme2, width/2, height*0.75);
-    
+
     //Select genre
   } else if (SelectGenre == true) {
     text("Select Genre", width*0.15, height*0.225);
@@ -159,7 +165,7 @@ void MakeGame() {
     while (Genre2 == Genre1) Genre2 = GenresI.get(floor(random(1, Options+1)));
     fill(0);
     text(Genre2, width/2, height*0.75);
-    
+
     //Select gameplay
   } else if (SelectGameplay == true) {
     text("Select Gameplay", width*0.15, height*0.225);
@@ -182,7 +188,18 @@ void MakeGame() {
 }
 
 void PlayGame() {
+  strokeWeight(10);
+  line(width*0.1, height*0.1, width*0.1, height*0.9); //lodret
+  line(width*0.9, height*0.1, width*0.9, height*0.9);
+  line(width*0.1, height*0.1, width*0.9, height*0.1); //vandret
+  line(width*0.1, height*0.9, width*0.9, height*0.9);
   
+  if (GameplaysB.get("Obby")) {
+    if (GenresB.get("Horror")) {
+      if (ThemesB.get("Realistic")) {
+      }
+    }
+  }
 }
 
 void mouseClicked() {
@@ -228,6 +245,17 @@ void mouseClicked() {
       SelectGameplay = true;
 
       println("MakeGame = " + MakeGame + " & SelectGenre = " + SelectGenre + " & SelectGameplay = " + SelectGameplay);
+    }
+  } else if (MakeGame == true && SelectGameplay == true) {
+    if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.3 && mouseY <= (height*0.3)+(height*0.2)) {
+      GameplaysB.put(Gameplay1, true);
+      SelectGameplay = false;
+      PlayGame = true;
+      
+    } else if (mouseX >= width*0.3 && mouseX <= (width*0.3)+(width*0.4) && mouseY >= height*0.6 && mouseY <= (height*0.6)+(height*0.2)) {
+      GameplaysB.put(Gameplay2, true);
+      SelectGameplay = false;
+      PlayGame = true;
     }
   }
 }
