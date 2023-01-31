@@ -1,3 +1,10 @@
+boolean Testing = true;
+
+boolean ObstacleMade = false;
+float Obstacle1, Obstacle2, Obstacle3, Obstacle4;
+
+float xTranslate, yTranslate;
+
 boolean StartMenu = true;
 boolean MakeGame = false;
 boolean PlayGame = false;
@@ -58,6 +65,17 @@ void setup() {
   Gameplay2 = GameplaysI.get(floor(random(1, Options+1)));
 
   MenuSizes = width;
+  
+  if (Testing) {
+    println("Testermode On");
+    StartMenu = false;
+    MakeGame = false;
+    PlayGame = true;
+    
+    ThemesB.put("Realistic", true);
+    GenresB.put("Horror", true);
+    GameplaysB.put("Obby", true);
+  }
 }
 
 boolean Grid = true;
@@ -65,25 +83,16 @@ int GridX = 10; //How many tiles on X axis (NOT lines)
 int GridY = 10; //How many tiles on Y axis (NOT lines)
 
 void draw() {
+  translate(0,0);
   background(75, 150, 0);
   fill(240);
   rect(width*0.1, height*0.1, width*0.8, height*0.8);
   if (StartMenu) StartMenu();
   if (MakeGame) MakeGame();
   if (PlayGame) PlayGame();
-
-  strokeWeight(2);
-  fill(255, 50, 50); //give tester button red color
-  circle(width*0.95, height/2, width*0.075);
-  fill(0);
-  textAlign(CENTER);
-  textSize(MenuSizes*0.025);
-  text("TEST", width*0.95, height*0.515);
-
-  strokeWeight(1);
-  noFill();
-  textAlign(LEFT);
+  
   if (Grid) Grid();
+  
 }
 
 void Grid() {
@@ -195,25 +204,37 @@ void MakeGame() {
 }
 
 void PlayGame() {
-  //Gameplay being made
-  if (GameplaysB.get("Obby")) {
-    translate(0,0);
+  if (GameplaysB.get("Obby")) { //Gameplay being made
+  xTranslate = width*0.5;
+  translate(xTranslate, 0);
+    if (GenresB.get("Horror")) { //Gnere being added
+      if (ThemesB.get("Realistic")) { //Theme being added
+      
+      }
+      
+    }
     
-    fill(240);
+    fill(200);
     strokeWeight(2);
     rect(width*0.1, height*0.6, width*0.3, height*0.1);
     rect(width*0.1, height*0.7, width*0.3, height*0.2);
     
-    noFill();
-    strokeWeight(1);
-    
-    //Genre being added
-    if (GenresB.get("Horror")) {
+    if (!ObstacleMade) {
+      Obstacle1 = floor(random(4, 9))*0.1;
+      Obstacle2 = floor(random(4, 9))*0.1;
+      Obstacle3 = floor(random(4, 9))*0.1;
+      Obstacle4 = floor(random(4, 9))*0.1;
       
-      //Theme being added
-      if (ThemesB.get("Realistic")) {
-      }
+      ObstacleMade = true;
     }
+    
+    rect(width*0,5, height*Obstacle1, width*0.1, height);
+    rect(width*0.7, height*Obstacle2, width*0.1, height);
+    rect(width*0.9, height*Obstacle3, width*0.1, height);
+    rect(width*1.1, height*Obstacle4, width*0.1, height);
+    
+    fill(75, 150, 0);
+    rect(0, height*0.9, width, height);
   }
   
   strokeWeight(10);
@@ -226,18 +247,6 @@ void PlayGame() {
 
 void mouseClicked() {
   println("Mouse has been clicked");
-
-  //Tester button
-  if (mouseX >= (width*0.95)-((width*0.075)/2) && mouseX <= (width*0.95)+((width*0.075)/2) && mouseY >= (height/2)-((height*0.075)/2) && mouseY <= (height/2)+((height*0.075)/2)) {
-    println("Testermode On");
-    StartMenu = false;
-    MakeGame = false;
-    PlayGame = true;
-    
-    ThemesB.put("Realistic", true);
-    GenresB.put("Horror", true);
-    GameplaysB.put("Obby", true);
-  }
 
   //StartMenu
   if (StartMenu) {
@@ -291,27 +300,5 @@ void mouseClicked() {
       SelectGameplay = false;
       PlayGame = true;
     }
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
-class Obby {
-  float xPos;
-  float yPos;
-  float xGroundPos;
-  float yGroundPos;
-  float yHeight;
-  
-  Obby(float tempXpos, float tempYpos, float tempXgroundPos, float tempYgroundPos, float tempYheight) {
-    xPos = tempXpos;
-    yPos = tempYpos;
-    xGroundPos = tempXgroundPos;
-    yGroundPos = tempYgroundPos;
-    yHeight = tempYheight;
-  }
-  
-  void Obstacle() {
-    
   }
 }
