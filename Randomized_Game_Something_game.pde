@@ -1,9 +1,11 @@
-boolean Testing = true;
+boolean Testing = true; //<>//
 
 boolean ObstacleMade = false;
 float Obstacle1, Obstacle2, Obstacle3, Obstacle4;
-
-float xTranslate, yTranslate;
+boolean PlayerMade = false;
+int PlayerX, PlayerY, PlayerFall, PlayerJump; //Jump is the same as Fall, but seperating them makes it way easier to use
+boolean MovePlayerUp, MovePlayerDown, MovePlayerLeft, MovePlayerRight;
+boolean PlayerCollision;
 
 boolean StartMenu = true;
 boolean MakeGame = false;
@@ -32,17 +34,15 @@ String Gameplay1;
 String Gameplay2;
 
 int MenuSizes;
-int Options = 2;
+int Options = 2; //Must be least 2, though currently just 2
 
 void setup() {
   size(1500, 800);
 
   ThemesB.put("Realistic", false);
   ThemesB.put("Western", false);
-  if (Options >= 3) ThemesB.put("Futuristic", false);
   ThemesI.put(1, "Realistic");
   ThemesI.put(2, "Western");
-  if (Options >= 3) ThemesI.put(3, "Futuristic");
   Theme1 = ThemesI.get(floor(random(1, Options+1)));
   Theme2 = ThemesI.get(floor(random(1, Options+1)));
 
@@ -57,21 +57,19 @@ void setup() {
 
   GameplaysB.put("Obby", false);
   GameplaysB.put("Story", false);
-  if (Options >= 3) GameplaysB.put("BattleRoyale", false);
   GameplaysI.put(1, "Obby");
   GameplaysI.put(2, "Story");
-  if (Options >= 3) GameplaysI.put(3, "BattleRoyale");
   Gameplay1 = GameplaysI.get(floor(random(1, Options+1)));
   Gameplay2 = GameplaysI.get(floor(random(1, Options+1)));
 
   MenuSizes = width;
-  
+
   if (Testing) {
     println("Testermode On");
     StartMenu = false;
     MakeGame = false;
     PlayGame = true;
-    
+
     ThemesB.put("Realistic", true);
     GenresB.put("Horror", true);
     GameplaysB.put("Obby", true);
@@ -83,16 +81,14 @@ int GridX = 10; //How many tiles on X axis (NOT lines)
 int GridY = 10; //How many tiles on Y axis (NOT lines)
 
 void draw() {
-  translate(0,0);
   background(75, 150, 0);
   fill(240);
   rect(width*0.1, height*0.1, width*0.8, height*0.8);
   if (StartMenu) StartMenu();
   if (MakeGame) MakeGame();
   if (PlayGame) PlayGame();
-  
+
   if (Grid) Grid();
-  
 }
 
 void Grid() {
@@ -204,39 +200,104 @@ void MakeGame() {
 }
 
 void PlayGame() {
-  if (GameplaysB.get("Obby")) { //Gameplay being made
-  xTranslate = width*0.5;
-  translate(xTranslate, 0);
-    if (GenresB.get("Horror")) { //Gnere being added
+  if (GameplaysB.get("Obby")) { //Gameplay being made - game is made using chosen genre and theme (check "how to game ting")
+    if (GenresB.get("Horror")) { //Genre being added
+      color ObbyGround = (200);
+      color PlayerHead = (100);
+      color PlayerBody = (150);
       if (ThemesB.get("Realistic")) { //Theme being added
-      
+
+        fill(ObbyGround);
+        strokeWeight(2);
+
+        //Giving obstacles their heights
+        if (!ObstacleMade) {
+          Obstacle1 = floor(random(4, 9))*0.1;
+          Obstacle2 = floor(random(4, 9))*0.1;
+          Obstacle3 = floor(random(4, 9))*0.1;
+          Obstacle4 = floor(random(4, 9))*0.1;
+
+          ObstacleMade = true;
+        }
+
+        //Obstacles - ground
+        rect(width*0.1, height*0.6, width*0.15, height);
+        if (PlayerX >= width*0.1 && PlayerX <= (width*0.1)+(width*0.15) && PlayerY >= height*0.55-floor(height*0.025)) {
+          if (PlayerJump == 0) PlayerCollision = true;
+          PlayerY = floor(height*0.6)-floor(height*0.075);
+        }
+
+        rect(width*0.75, height*0.6, width*0.15, height);
+        if (PlayerX >= width*0.75 && PlayerX <= (width*0.75)+(width*0.15) && PlayerY >= height*0.55-floor(height*0.025)) {
+          if (PlayerJump == 0) PlayerCollision = true;
+          PlayerY = floor(height*0.6)-floor(height*0.075);
+        }
+        rect(width*0.31, int(height*Obstacle1), width*0.05, height);
+        if (PlayerX >= width*0.31 && PlayerX <= (width*0.31)+(width*0.05) && PlayerY >= int((height*Obstacle1)-height*0.05)-floor(height*0.025)) {
+          if (PlayerJump == 0) PlayerCollision = true;
+          PlayerY = floor(height*Obstacle1)-floor(height*0.075);
+        }
+        rect(width*0.42, int(height*Obstacle2), width*0.05, height);
+        if (PlayerX >= width*0.42 && PlayerX <= (width*0.42)+(width*0.05) && PlayerY >= int((height*Obstacle2)-height*0.05)-floor(height*0.025)) {
+          if (PlayerJump == 0) PlayerCollision = true;
+          PlayerY = floor(height*Obstacle2)-floor(height*0.075);
+        }
+        rect(width*0.53, int(height*Obstacle3), width*0.05, height);
+        if (PlayerX >= width*0.53 && PlayerX <= (width*0.53)+(width*0.05) && PlayerY >= int((height*Obstacle3)-height*0.05)-floor(height*0.025)) {
+          if (PlayerJump == 0) PlayerCollision = true;
+          PlayerY = floor(height*Obstacle3)-floor(height*0.075);
+        }
+        rect(width*0.64, int(height*Obstacle4), width*0.05, height);
+        if (PlayerX >= width*0.64 && PlayerX <= (width*0.64)+(width*0.05) && PlayerY >= int((height*Obstacle4)-height*0.05)-floor(height*0.025)) {
+          if (PlayerJump == 0) PlayerCollision = true;
+          PlayerY = floor(height*Obstacle4)-floor(height*0.075);
+        }
+
+        //Making sure no obstacle goes through screen
+        fill(75, 150, 0);
+        rect(0, height*0.9, width, height*0.1);
+
+        //Player
+        if (!PlayerMade) {
+          PlayerX = floor(width*0.15);
+          PlayerY = floor(height*0.525);
+
+          PlayerMade = true;
+        }
+
+        fill(PlayerHead);
+        rect(PlayerX, PlayerY, height*0.025, height*0.025);
+        fill(PlayerBody);
+        rect(PlayerX, PlayerY+(height*0.025), height*0.025, height*0.05);
+
+        //Player movement
+        if (MovePlayerRight) PlayerX = PlayerX + floor(width*0.002);
+        if (MovePlayerLeft) PlayerX = PlayerX - floor(width*0.002);
+
+        if (MovePlayerUp) {
+          if (PlayerJump > 0) {
+            PlayerY = PlayerY - PlayerJump;
+            PlayerJump--;
+            println("PlayerJump = " + PlayerJump);
+          } else if (PlayerJump <= 0) {
+            PlayerJump = 0;
+            println("PlayerJump = " + PlayerJump);
+            if (!PlayerCollision) {
+              PlayerY = PlayerY + PlayerFall;
+              PlayerFall++;
+              println("PlayerCollision = " + PlayerCollision + " " + "PlayerFall = " + PlayerFall);
+            } else if (PlayerCollision) {
+              PlayerFall = 0;
+              MovePlayerUp = false;
+              println("PlayerCollision = " + PlayerCollision + " " + "PlayerFall = " + PlayerFall);
+            }
+          }
+        }
       }
-      
     }
-    
-    fill(200);
-    strokeWeight(2);
-    rect(width*0.1, height*0.6, width*0.3, height*0.1);
-    rect(width*0.1, height*0.7, width*0.3, height*0.2);
-    
-    if (!ObstacleMade) {
-      Obstacle1 = floor(random(4, 9))*0.1;
-      Obstacle2 = floor(random(4, 9))*0.1;
-      Obstacle3 = floor(random(4, 9))*0.1;
-      Obstacle4 = floor(random(4, 9))*0.1;
-      
-      ObstacleMade = true;
-    }
-    
-    rect(width*0,5, height*Obstacle1, width*0.1, height);
-    rect(width*0.7, height*Obstacle2, width*0.1, height);
-    rect(width*0.9, height*Obstacle3, width*0.1, height);
-    rect(width*1.1, height*Obstacle4, width*0.1, height);
-    
-    fill(75, 150, 0);
-    rect(0, height*0.9, width, height);
   }
-  
+  noFill();
+
   strokeWeight(10);
   line(width*0.1, height*0.1, width*0.1, height*0.9); //lodret
   line(width*0.9, height*0.1, width*0.9, height*0.9);
@@ -301,4 +362,22 @@ void mouseClicked() {
       PlayGame = true;
     }
   }
+}
+
+void keyPressed() {
+  if (key == 'a') MovePlayerLeft = true;
+  if (key == 'd') MovePlayerRight = true;
+  if (key == 'w') {
+    MovePlayerUp = true;
+    if (GameplaysB.get("Obby")) {
+      PlayerJump = 25;
+      PlayerCollision = false;
+    }
+    println("MovePlayerUp = " + MovePlayerUp + " & " + "PlayerJump = " + PlayerJump + " & " + "PlayerCollision = " + PlayerCollision);
+  }
+}
+
+void keyReleased() {
+  if (key == 'a') MovePlayerLeft = false;
+  if (key == 'd') MovePlayerRight = false;
 }
