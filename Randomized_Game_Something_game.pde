@@ -228,27 +228,27 @@ void PlayGame() {
         }
 
         rect(width*0.75, height*0.6, width*0.15, height);
-        if (PlayerX >= width*0.75 && PlayerX <= (width*0.75)+(width*0.15) && PlayerY >= height*0.55-floor(height*0.025)) {
+        if (PlayerX >= (width*0.75-height*0.025) && PlayerX <= (width*0.75)+(width*0.15) && PlayerY >= height*0.55-floor(height*0.025)) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*0.6)-floor(height*0.075);
         }
         rect(width*0.31, int(height*Obstacle1), width*0.05, height);
-        if (PlayerX >= width*0.31 && PlayerX <= (width*0.31)+(width*0.05) && PlayerY >= int((height*Obstacle1)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.31-height*0.025) && PlayerX <= (width*0.31)+(width*0.05) && PlayerY >= int((height*Obstacle1)-height*0.05)-floor(height*0.025)) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle1)-floor(height*0.075);
         }
         rect(width*0.42, int(height*Obstacle2), width*0.05, height);
-        if (PlayerX >= width*0.42 && PlayerX <= (width*0.42)+(width*0.05) && PlayerY >= int((height*Obstacle2)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.42-height*0.025) && PlayerX <= (width*0.42)+(width*0.05) && PlayerY >= int((height*Obstacle2)-height*0.05)-floor(height*0.025)) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle2)-floor(height*0.075);
         }
         rect(width*0.53, int(height*Obstacle3), width*0.05, height);
-        if (PlayerX >= width*0.53 && PlayerX <= (width*0.53)+(width*0.05) && PlayerY >= int((height*Obstacle3)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.53-height*0.025) && PlayerX <= (width*0.53)+(width*0.05) && PlayerY >= int((height*Obstacle3)-height*0.05)-floor(height*0.025)) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle3)-floor(height*0.075);
         }
         rect(width*0.64, int(height*Obstacle4), width*0.05, height);
-        if (PlayerX >= width*0.64 && PlayerX <= (width*0.64)+(width*0.05) && PlayerY >= int((height*Obstacle4)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.64-height*0.025) && PlayerX <= (width*0.64)+(width*0.05) && PlayerY >= int((height*Obstacle4)-height*0.05)-floor(height*0.025)) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle4)-floor(height*0.075);
         }
@@ -271,28 +271,26 @@ void PlayGame() {
         rect(PlayerX, PlayerY+(height*0.025), height*0.025, height*0.05);
 
         //Player movement
-        if (MovePlayerRight) PlayerX = PlayerX + floor(width*0.002);
-        if (MovePlayerLeft) PlayerX = PlayerX - floor(width*0.002);
+        if (MovePlayerRight && PlayerX < (width*0.9)-(height*0.03)) PlayerX = PlayerX + floor(width*0.002);
+        if (MovePlayerLeft && PlayerX > (width*0.105)) PlayerX = PlayerX - floor(width*0.002);
 
         if (MovePlayerUp) {
-          if (PlayerJump > 0) {
+          if (PlayerJump > 0 && PlayerY > height*0.1 + 25) {
             PlayerY = PlayerY - PlayerJump;
             PlayerJump--;
-            println("PlayerJump = " + PlayerJump);
-          } else if (PlayerJump <= 0) {
+          } else if (PlayerJump <= 0 || PlayerY <= height*0.1 + 25) {
             PlayerJump = 0;
-            println("PlayerJump = " + PlayerJump);
             if (!PlayerCollision) {
               PlayerY = PlayerY + PlayerFall;
               PlayerFall++;
-              println("PlayerCollision = " + PlayerCollision + " " + "PlayerFall = " + PlayerFall);
             } else if (PlayerCollision) {
               PlayerFall = 0;
               MovePlayerUp = false;
-              println("PlayerCollision = " + PlayerCollision + " " + "PlayerFall = " + PlayerFall);
             }
           }
         }
+        
+        
       }
     }
   }
@@ -365,15 +363,17 @@ void mouseClicked() {
 }
 
 void keyPressed() {
+  //Universal movement
   if (key == 'a') MovePlayerLeft = true;
   if (key == 'd') MovePlayerRight = true;
-  if (key == 'w') {
+  
+  //Movement for certain gameplays
+  if ((key == 'w' || key == ' ') && !MovePlayerUp) {
     MovePlayerUp = true;
     if (GameplaysB.get("Obby")) {
       PlayerJump = 25;
       PlayerCollision = false;
     }
-    println("MovePlayerUp = " + MovePlayerUp + " & " + "PlayerJump = " + PlayerJump + " & " + "PlayerCollision = " + PlayerCollision);
   }
 }
 
