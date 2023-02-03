@@ -1,4 +1,4 @@
-boolean Testing = true; //<>//
+boolean Testing = true;
 
 boolean ObstacleMade = false;
 float Obstacle1, Obstacle2, Obstacle3, Obstacle4;
