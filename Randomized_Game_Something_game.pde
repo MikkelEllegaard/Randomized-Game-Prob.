@@ -271,6 +271,15 @@ void PlayGame() {
         rect(PlayerX, PlayerY+(height*0.025), height*0.025, height*0.05);
 
         //Player movement
+        /*
+        
+        IMPORTANT
+        
+        PUT VERTICAL MOVEMENT BEFORE OBBY, AND PLAYER STAYS AFTER OBBY
+        
+        IMPORTANT
+        
+        */
         if (MovePlayerRight && PlayerX < (width*0.9)-(height*0.03)) PlayerX = PlayerX + floor(width*0.002);
         if (MovePlayerLeft && PlayerX > (width*0.105)) PlayerX = PlayerX - floor(width*0.002);
 
