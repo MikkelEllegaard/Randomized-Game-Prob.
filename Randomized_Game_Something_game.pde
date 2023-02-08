@@ -5,7 +5,7 @@ float Obstacle1, Obstacle2, Obstacle3, Obstacle4;
 boolean PlayerMade = false;
 int PlayerX, PlayerY, PlayerFall, PlayerJump; //Jump is the same as Fall, but seperating them makes it way easier to use
 boolean MovePlayerUp, MovePlayerDown, MovePlayerLeft, MovePlayerRight;
-boolean PlayerCollision;
+boolean PlayerCollision, PlayerLeftCollision, PlayerRightCollision;
 
 boolean StartMenu = true;
 boolean MakeGame = false;
@@ -209,7 +209,28 @@ void PlayGame() {
 
         fill(ObbyGround);
         strokeWeight(2);
+        
+        //Player movement
+        if (MovePlayerRight && PlayerX < (width*0.9)-(height*0.03)) PlayerX = PlayerX + floor(width*0.002);
+        if (MovePlayerLeft && PlayerX > (width*0.105)) PlayerX = PlayerX - floor(width*0.002);
 
+        if (MovePlayerUp) {
+          if (PlayerJump > 0 && PlayerY > height*0.1 + 5) {
+            PlayerY = PlayerY - PlayerJump;
+            PlayerJump--;
+          } else if (PlayerJump <= 0 || PlayerY <= height*0.1 + 5) {
+            PlayerJump = 0;
+            if (PlayerY <= height*0.1 + 5) PlayerY = floor(height*0.1) + 5;
+            if (!PlayerCollision) {
+              PlayerY = PlayerY + PlayerFall;
+              PlayerFall++;
+            } else if (PlayerCollision) {
+              PlayerFall = 0;
+              MovePlayerUp = false;
+            }
+          }
+        }
+        
         //Giving obstacles their heights
         if (!ObstacleMade) {
           Obstacle1 = floor(random(4, 9))*0.1;
@@ -220,37 +241,49 @@ void PlayGame() {
           ObstacleMade = true;
         }
 
-        //Obstacles - ground
+        PlayerLeftCollision = false;
+        PlayerRightCollision = false;
+        //Obstacles
+        //FOR AT DE VIRKER HELT: find ud af hvor meget playerFall er blevet, og ud fra noget mere fancy udregnes hvor spiller langt nede spiller skal være?
         rect(width*0.1, height*0.6, width*0.15, height);
-        if (PlayerX >= width*0.1 && PlayerX <= (width*0.1)+(width*0.15) && PlayerY >= height*0.55-floor(height*0.025)) {
+        if (PlayerX >= width*0.1 && PlayerX <= (width*0.1)+(width*0.15) && PlayerY >= (height*0.6)-(floor(height*0.075))) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*0.6)-floor(height*0.075);
         }
 
         rect(width*0.75, height*0.6, width*0.15, height);
-        if (PlayerX >= (width*0.75-height*0.025) && PlayerX <= (width*0.75)+(width*0.15) && PlayerY >= height*0.55-floor(height*0.025)) {
+        if (PlayerX >= (width*0.75-height*0.025) && PlayerX <= (width*0.75)+(width*0.15) && PlayerY >= (height*0.6)-floor(height*0.075)) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*0.6)-floor(height*0.075);
         }
         rect(width*0.31, int(height*Obstacle1), width*0.05, height);
-        if (PlayerX >= (width*0.31-height*0.025) && PlayerX <= (width*0.31)+(width*0.05) && PlayerY >= int((height*Obstacle1)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.31-height*0.025) && PlayerX <= (width*0.31)+(width*0.05) && PlayerY >= int((height*Obstacle1)-floor(height*0.075))) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle1)-floor(height*0.075);
         }
         rect(width*0.42, int(height*Obstacle2), width*0.05, height);
-        if (PlayerX >= (width*0.42-height*0.025) && PlayerX <= (width*0.42)+(width*0.05) && PlayerY >= int((height*Obstacle2)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.42-height*0.025) && PlayerX <= (width*0.42)+(width*0.05) && PlayerY >= int((height*Obstacle2)-floor(height*0.075))) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle2)-floor(height*0.075);
         }
         rect(width*0.53, int(height*Obstacle3), width*0.05, height);
-        if (PlayerX >= (width*0.53-height*0.025) && PlayerX <= (width*0.53)+(width*0.05) && PlayerY >= int((height*Obstacle3)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.53-height*0.025) && PlayerX <= (width*0.53)+(width*0.05) && PlayerY >= int((height*Obstacle3)-floor(height*0.075))) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle3)-floor(height*0.075);
         }
         rect(width*0.64, int(height*Obstacle4), width*0.05, height);
-        if (PlayerX >= (width*0.64-height*0.025) && PlayerX <= (width*0.64)+(width*0.05) && PlayerY >= int((height*Obstacle4)-height*0.05)-floor(height*0.025)) {
+        if (PlayerX >= (width*0.64-height*0.025) && PlayerX <= (width*0.64)+(width*0.05) && PlayerY >= int((height*Obstacle4)-floor(height*0.075))) {
           if (PlayerJump == 0) PlayerCollision = true;
           PlayerY = floor(height*Obstacle4)-floor(height*0.075);
+        }
+
+        if (PlayerX <= (width*0.1)+5) {
+          PlayerLeftCollision = true;
+          PlayerX = floor(width*0.1)+5;
+        }
+        if (PlayerX >= (width*0.9)-(height*0.025)-5) {
+          PlayerRightCollision = true;
+          PlayerX = floor(width*0.9)-floor(height*0.025)-5;
         }
 
         //Making sure no obstacle goes through screen
@@ -264,41 +297,13 @@ void PlayGame() {
 
           PlayerMade = true;
         }
-
+        
         fill(PlayerHead);
         rect(PlayerX, PlayerY, height*0.025, height*0.025);
         fill(PlayerBody);
         rect(PlayerX, PlayerY+(height*0.025), height*0.025, height*0.05);
-
-        //Player movement
-        /*
         
-        IMPORTANT
-        
-        PUT VERTICAL MOVEMENT BEFORE OBBY, AND PLAYER STAYS AFTER OBBY
-        
-        IMPORTANT
-        
-        */
-        if (MovePlayerRight && PlayerX < (width*0.9)-(height*0.03)) PlayerX = PlayerX + floor(width*0.002);
-        if (MovePlayerLeft && PlayerX > (width*0.105)) PlayerX = PlayerX - floor(width*0.002);
-
-        if (MovePlayerUp) {
-          if (PlayerJump > 0 && PlayerY > height*0.1 + 25) {
-            PlayerY = PlayerY - PlayerJump;
-            PlayerJump--;
-          } else if (PlayerJump <= 0 || PlayerY <= height*0.1 + 25) {
-            PlayerJump = 0;
-            if (!PlayerCollision) {
-              PlayerY = PlayerY + PlayerFall;
-              PlayerFall++;
-            } else if (PlayerCollision) {
-              PlayerFall = 0;
-              MovePlayerUp = false;
-            }
-          }
-        }
-        
+        fill(200, 200);
         
       }
     }
